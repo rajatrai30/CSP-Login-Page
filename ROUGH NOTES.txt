@@ -1,0 +1,354 @@
+###### LIFE CYCLE METHODS IN REACT ######
+At mounting phase of a component, following methods which will be invoked:
+constructor()
+static getDerivedStateFromProps()
+render()
+componentDidMount()
+constructor(): Constructors are used only for the below 2 purposes which we have already seen in the state demo:
+Initializing state of a component
+For binding event handler methods to an instance
+static getDerivedStateFromProps(): getDerivedStateFromProps() is invoked right before the render method. This method is called both in mounting and updating phase. 
+render(): Every React component must have render() method. render() method should be a pure function which returns the same result every time it is called which means, it doesn't modify any component's state.
+componentDidMount():
+Invoked immediately after the component is mounted to DOM tree
+Now will have access to all the DOM nodes hence any initialization which requires DOM nodes should be done here
+Best place for setting timers and handling Ajax request.
+
+
+
+
+################# TYPES OF FORM COMPONENTS IN REACT USED ##############################
+We can create two different ways of forms in React:
+1. Controlled component
+2. Uncontrolled component
+Controlled component: In HTML, form elements such as <input>, <textarea>, and <select> typically maintains their own state and that gets updated based on user input. But in React, we handle it using state and state gets updated using setState() method. So an input form element whose value is controlled by React in this way will be 
+called a controlled component.
+Below is an example of a controlled component where it has a value attribute and a handler function:
+<input type="text" value={this.state.name} onChange={this.handleData}/>
+Uncontrolled component: The traditional HTML input elements are uncontrolled component, where the form data is handled by DOM itself. In uncontrolled component, we do not use the value attributes.
+Below is the example for an uncontrolled component:
+<input type="text" />
+Here, input will not have value attribute and event handler, instead to get the value from the DOM ref is used as follows:
+<input type="text" ref={this.input}/>
+In React, ref provides a way to access the DOM node or the React elements, and helps in getting the value from the DOM.
+refs are to be used when we have the below requirements:
+1. Integrating with third-party libraries, like D3 which has it's own DOM manipulation API's
+2. To use media playbacks like audio, video. refs provide control over the DOM API.
+3. Trigger imperative animations
+By using refs, we are deviating from the React way of handling data. In React we store data as state and when the state in updated component gets re-rendered. This follows a unidirectional data flow and the data is stored in a single 
+source of truth i.e., state.
+Let's see how ref and refs will be used to get the reference of a node.
+We need to create a ref instance within the constructor as shown below:
+constructor(props) {
+    super(props);
+    this.nameRef = React.createRef();
+}
+We need to assign the ref instance created in the constructor to the input field using ref attribute, as shown below:
+input type="text" ref={this.nameRef} />
+When we assign a ref attribute to the input field, the ref created in the constructor will receive the DOM element.
+We can access the value of the input field as shown below:
+this.nameRef.current.value;
+ 
+
+
+
+######### HOOKS IN REACT ########
+As we all know, we can create components in 2 different ways:
+Class component
+Functional component
+In a component, if we need to use any lifecycle methods, state and any other React features, then we create it as a class component. But if a 
+component has no state and lifecycle methods, then it can be created as a simple JavaScript function – functional component. And later if we want to add any lifecycle method or any other React features, 
+then it has to be changed as a class component.
+But without switching to a class component, we can have lifecycle methods, state and other React features in functional component itself, by using the new feature of React i.e. Hooks.
+This feature has been added from React v16.8.0.
+
+
+####### WHAT ARE HOOKS IN REACT ########
+React hooks are JavaScript functions, which allows the developer to interact with 
+the state and lifecycle methods through functional components
+Earlier we could associate state, modify the state, and implement lifecycle 
+methods only in class components, whereas functional components were used only to 
+present the UI content, but now with React 16.8 we can achieve the above-mentioned 
+tasks in functional components using React hooks.
+The different hooks available in React are
+1. useState()
+2. useEffect()
+3. useContext()
+Let us discuss these hooks in detail in the next section.
+
+
+1. useState():
+useState hook is used to add or initialize state value within a 
+functional component. It is equivalent to this.state statement
+ of Class component which is used to initialize the state value. 
+This hook helps to preserve the state value of a component.
+Syntax - useState() can be written as follows:
+const [state, setState] = useState(initialState);
+
+2. useEffect()
+In order to run some code after the component mounts or after the component updates, 
+then we use componentDidMount and componentDidUpdate lifecycle methods in class 
+based components respectively.
+As we cannot use these lifecycle methods in functional components, we can use useEffect() hook instead.
+useEffect() method gets executed in both cases i.e. after first render and every time the component gets updated.
+Syntax - useEffect() can be written as follows:
+useEffect(()=>{
+        //implementation
+})
+The useEffect() method takes an array as a second argument:
+useEffect(()=>{
+        //implementation
+},[])
+
+
+
+################## ROUTER IN REACT ######################
+As we all know, these days we are switching from the multi-page application app to single 
+page application (SPA) because of the below issues we had in multi-page applications:
+Every request will be sent to the server from the client
+The Server responds to the client with new HTML content
+Every time page reload will happen for every request
+This would increase the round trips to the server and also delay in response
+SPA overcomes limitations of multi-page application as described below:
+Rather than loading a new page from the server on every user interaction 
+(such as clicking on the login button) instead, it loads an entire web page 
+containing all views from the server when the application starts
+As a result, after the initial page load, no server communication is 
+required for further page updates upon user interaction
+So here, we have to navigate from one view to another without hitting server. For this 
+React JS provides the react-router-dom library.
+Next, let's see how to configure routes in ReactJS application using the react-router-dom library.
+
+Step 1: Install react-router-dom library by running the npm command in your application folder:
+npm install react-router-dom
+Example: If your folder "react_demo" is on the desktop then install it in that particular path as shown below:
+D:\react_demo> npm install react-router-dom
+
+Step 2: Import required router components from the react-router-dom library as shown below:
+import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
+
+
+
+a. <BrowserRouter>: It is a primary component containing the entire routing configuration. It is a 
+    more popular one because it uses the HTML5 History API to keep track of your router history.
+    All the routes should be wrapped within a container element such as div.
+
+b. <Route>: It is a prop of Router. It maps routes to our application’s 
+    component hierarchy using "path“ and "component" props and sets all 
+    navigational routes
+
+c. path: Maps to the path given in URL
+d. component: Contains component name to be rendered when the route is mapped
+e. exact: This property tells Route to match the exact path. In the below example Header component 
+    will render when the browser's location path matches exactly /
+
+############################## REDUX IN REACT ################################
+Redux is an application data-flow architecture which is used for predicting state changes
+in JavaScript applications. Redux is not a framework. Redux can be used with any other View 
+library but mostly used with React.
+Dan Abramov created Redux in 2015. Redux was inspired greatly by functional 
+programming language and FLUX architecture.
+
+
+The main concepts of Redux architecture are:
+    Store: The place where the entire state of the application is stored
+    Actions: JS objects which encapsulate the events triggered within the application. 
+    Reducers: Pure functions that modify the state of the application according to the actions triggered.
+
+In Redux state is an immutable object. The state object cannot be changed directly in Redux. 
+Triggering actions are the only way to modify the state. Every time the state is modified a
+ new object should be returned which represents 
+the modifications that are made to the state object.
+Let us explore more on immutability
+
+
+################################ IMMUTABILITY AND REDUX REALTION #############################################
+
+Immutability means, values cannot be changed. To change immutable objects we need to create 
+a copy of it and modify the copy.    
+In Redux state is an immutable object. The state object cannot be changed directly in Redux. 
+Triggering actions are the only way to modify the state. 
+Every time the state is modified a new object should be returned which
+represents the modifications that are made to the state object.
+
+Handling immutability
+There are many ways to handle immutability. Object.assign and spread operator for
+ arrays are the most popular approach when working in ES6.
+Object.assign()
+Consider state object a shown below 
+state={status: 'logged out', value: 'guest',email:'',tel:''} 
+
+
+When Login action is triggered we want to change only the status and value properties. 
+We can use Object.assign to create a copy and modify only a few properties as shown below.
+Object.assign({}, state, { 
+      status: 'logged in', 
+      value: action.value 
+})
+
+The first parameter to Object.assign is the target which is a new empty object, then we are mixing the new object together with our existing state and also changing the status and value properties. So the result is effectively a 
+clone of our state object but with the state modified after login.
+Spread(...) operator
+
+The spread operator is represented using 3 dots (...)
+It copies its own enumerable properties from a provided object onto a new object.
+var obj1 = { foo: 'bar', x: 42 };
+var obj2 = { foo: 'baz', y: 13 };
+var clonedObj = { ...obj1 };
+// Object { foo: "bar", x: 42 }
+var mergedObj = { ...obj1, ...obj2 };
+// Object { foo: "baz", x: 42, y: 13 }
+
+
+
+######################################## REDUX DATA FLOW #######################################
+The Redux data flow is represented below:
+React Components: React components represent the UI rendered on the browser. 
+Components would dispatch actions for events triggered within them and whenever the state 
+changes the component renders the current state by connecting to the Redux store.
+
+    @ Action Creators: Action creators are functions that wrap the actual action object.
+    @ Action: Action is a plain JavaScript object. Action is a command to change the state when an event is triggered.
+    @ Middleware: Middleware is a mediator between the action and reducer. Its 
+        purpose is to intercept the actions before it reaches the reducer.
+    @ Reducer: Reducer changes the state of the application based on the action triggered. 
+        Reducer is a function that accepts action and current state and modifies the current state by creating a copy of it based on the action.
+    @ Store: Store is responsible for managing the entire state of the application. 
+        State management is centralized in Redux. Action will be dispatched to the store using 
+        the dispatch method of the store.
+        Redux Data Flow explained with Login as an example
+
+
+Let us observe the Redux data flow by considering Login as an example. 
+The Login form is represented by the Login component.
+
+1.  When the user clicks on the login button, the action is dispatched. 
+2.  The Action reaches an action creator that returns an action. Action object 
+contains action type and payload information (if required)
+
+3.  The action reaches Reducer which modifies the state
+
+4.  If any operation needs to be performed before modifying state then action reaches 
+middleware first and then reaches reducer
+
+5.  Reducer updates the modified state to the store 
+6.  React components get the updated state from the store
+Let us observe the Redux data flow by considering Login as an example. The Login form is
+ represented by the Login component.
+
+
+############################# REDUCER EXPLANATION ########################
+When an action is triggered within any component the state modification is done using Reducers in Redux.
+
+Reducers contain the logic for modifying the state in Redux. The state is immutable in Redux, 
+hence state cannot be directly modified by reducers. Reducers in Redux are responsible for copying the 
+current state and modifying the copy and returning the new state. 
+
+Reducers are used to achieve immutability in Redux. Reducers are pure functions
+that are responsible for handling the actions and 
+modify the state of the application based on the action triggered.
+
+Reducers are functions that accept the current state and an action object as 
+arguments and will return the new state.
+The initial state of the application has to be passed to the reducer 
+which will be used when we run the application for the first time
+Forbidden in Reducers
+
+Mutating the arguments passed
+Performing side effects like API calls, AJAX call, etc
+Calling other non-pure functions (Ex: date.now(), Math.random())
+Now let us modify the state in myReducer for the ADD_TODO action triggered
+
+
+################################## STORE CONTAINER IN REDUCER ###############################################
+The store is the container used to place the entire state of the application.
+A Store can be created as shown below
+import {createStore} from 'redux';
+function myReducer() {
+}
+const store = createStore(myReducer)
+The reducer is passed to the store. Since the state changes are done by reducer 
+the reducer would update the store with the state changes done. Every time reducer 
+changes the state it updates the store and the store would contain the current state.
+Store Methods
+
+1. getState(): This method can be used to get the current state from the store.
+2. dispatch(action): React components should use this method to dispatch an action whenever 
+an event occurs within the component. This method dispatches an action and then the reducer 
+takes care of updating the state
+3. subscribe(listener): Used for registering the listeners
+
+We don't have any API's to change the data in the store. The only way to change 
+the state present in the store is by dispatching actions. The store would handle actions using reducers.
+
+
+################################# MIDDLEWARE INTRODUCTION ###############################
+Middleware need not be a pure function like reducers. It can cause side effects. 
+So whatever functionality we could not put into reducer because reducers are pure 
+can be put in middleware.
+
+Uses of middleware
+It provides functionality between action and reducer. After an action is triggered and 
+before its reduced middleware can take action.
+
+Organize all changes to the database (ajax calls) into one place
+Middleware allows pre-processing of actions. We can check for correct syntax, make sure 
+they conform to your standards or edit them in some way like wrapping them in a function
+Perfect for debugging an application
+Allows us to keep actions clean so we need less boilerplate and fewer tests in our actions 
+to make sure they are working correctly
+API calls are happening through middleware so if there is a mistake we can check middleware first.
+Popular middleware Libraries
+
+Redux Thunk
+Redux Saga
+The most common requirement to use middleware is to support asynchronous actions. 
+Middleware lets us dispatch async actions in addition to our regular actions.
+
+
+################################# REDUX THUNK LIBRARY OF MIDDLEWARE ###############################
+Middleware lets us wrap the dispatch method of the store. The most common requirement to use middleware 
+is to support asynchronous actions. Middleware lets us dispatch async actions in addition to our regular 
+actions.
+
+Redux thunk middleware allows the developer to write action creators which returns a function 
+instead of an action object. The middleware can be used to delay the dispatch of action or 
+dispatch the actions based on certain conditions.
+Each middleware receives Store's dispatch and getState functions as named arguments and 
+returns a function.
+
+
+The function which the action creator returns will receive these two arguments
+1. dispatch method of store 
+2. getState method of store
+createStore() method by default supports only synchronous data flow. In order to perform async 
+actions, we can use applyMiddleware() function
+When we create a middleware function, we would get an error because as per the Redux rules, action 
+creators should always return an action object, not function.
+To overcome the above error, we need to inform the store that we are using middleware 
+using the applyMiddleware function as shown below
+
+var store = applyMiddleware(thunk)(createStore)(reducer);
+
+To the applyMiddleware function, we need to pass the type of middleware we are using. 
+Since we are using thunk middleware, we should pass thunk to the applyMiddleware. 
+Before passing thunk to the applyMiddleware method, we need to install redux-thunk 
+package and import it as shown below
+
+npm install redux-thunk
+import thunk from 'redux-thunk';
+ 
+
+################################# USE CUSTOM MIDDLEWARE ###############################
+It is possible to write our own middleware in Redux. The basic code for writing custom middleware is shown below
+
+const customMiddleware = store => next => action => {
+  ...
+}
+Custom middleware receives a store then returns a function that receives the next function 
+and returns another function that receives an action. 
+next: This function is invoked when the middleware is done with the task assigned to do. 
+This function forwards the actions to either reducer or another middleware.
+action: That's our action currently being dispatched.
+The custom middleware has access to the getState() method of the store to fetch the current 
+state and dispatch() method of the store to dispatch actions if required. 
